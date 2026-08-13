@@ -7,6 +7,7 @@ def parse_receipt(image_path):
     lines = text.split('\n')
 
     data = {
+        "merchant": None,
         "date": None,
         "subtotal": None,
         "tax": None,
@@ -24,6 +25,11 @@ def parse_receipt(image_path):
         line = line.strip()
         if not line:
             continue
+
+        # look for merchant
+        if data["merchant"] is None:
+            # assume the first non-empty line is the merchant
+            data["merchant"] = line
 
         # look for date
         date_match = re.search(date_pattern, line)
